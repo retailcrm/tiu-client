@@ -1,6 +1,6 @@
 # tiu-client
 
-Скрипт выгрузки заказов из TIU.ru в [RetailCRM](http://retailcrm.ru) через [REST API](http://retailcrm.ru/docs/Разработчики/СправочникМетодовAPIV3)
+Скрипт выгрузки заказов из TIU.ru в [retailCRM](http://retailcrm.ru) через [REST API](http://retailcrm.ru/docs/Разработчики/СправочникМетодовAPIV3)
 
 ##Скрипт позволяет:
  * Выгружать заказы из tiu.ru в RetailCRM
