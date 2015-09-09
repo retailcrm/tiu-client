@@ -12,7 +12,7 @@
 
 ####1) Выполнить команды
 ```sh
-git clone https://github.com/cyradin/tiu-client.git
+git clone https://github.com/retailcrm/tiu-client.git
 cd tiu-client
 curl -sS https://getcomposer.org/installer | php
 php composer.phar require retailcrm/api-client-php ~3.0.0
