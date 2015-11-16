@@ -17,6 +17,7 @@ class Parser {
                 case 'id':
                     $val = (string)$val;
                     $order['number'] = $this->config['order_prefix'] . $val;
+                    $order['externalId'] = $val;
                     break;
                 case 'state':
                     $orderStatuses = array_flip($this->config['order_statuses']);
@@ -32,22 +33,42 @@ class Parser {
         $order = array_merge($order, array(
             'email' => (string)$xml->email,
             'phone' => (string)$xml->phone,
-            'orderMethod' => $this->config['order_method'],
             'createdAt' => $createdAt,
-            'paymentType' => $this->config['payment'][(string)$xml->paymentType],
             'delivery' => array(
                 'address' => array(
-                    'text' => (string)$xml->address
+                    'text' => trim((string)$xml->address)
                 ),
-                'code' => $this->config['delivery'][(string)$xml->deliveryType]
             )
         ));
+
+        if (empty($xml->name) && empty((string) $xml->email)) {
+            $order['orderMethod'] = 'callback';
+        } else {
+            $order['orderMethod'] = $this->config['order_method'];
+        }
+
+        if (!empty($xml->deliveryType) && isset($this->config['delivery'][(string)$xml->deliveryType])) {
+            $order['delivery']['code'] = $this->config['delivery'][(string)$xml->deliveryType];
+        }
+
+        if (!empty($xml->paymentType) && isset($this->config['payment'][(string)$xml->paymentType])) {
+            $order['paymentType'] = $this->config['payment'][(string)$xml->paymentType];
+        }
+
+        if (!empty($xml->salescomment)) {
+            $order['managerComment'] = (string)$xml->salescomment;
+        }
+
+        if (!empty($xml->payercomment)) {
+            $order['customerComment'] = (string)$xml->payercomment;
+        }
+
         $items = array();
         $xmlItems = $xml->items;
         foreach($xmlItems as $xmlItem) {
             $xmlItem = $xmlItem->item;
             $items[] = array(
-                'productId' => (string)$xmlItem->external_id,
+                'productId' => (string)$xmlItem['id'],
                 'productName' => (string)$xmlItem->name,
                 'quantity' => (string)$xmlItem->quantity,
                 'initialPrice' => (string)$xmlItem->price
