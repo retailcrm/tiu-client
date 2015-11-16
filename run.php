@@ -2,11 +2,13 @@
 require(__DIR__ . "/classes/ApiHelper.php");
 require(__DIR__ . "/config/config.php");
 
-if (! file_exists(__DIR__ . "/logs"))
+if (! file_exists(__DIR__ . "/logs")) {
     mkdir(__DIR__ . "/logs");
+}
 
-if (file_exists(__DIR__ . "/logs/cookie.txt"))
+if (file_exists(__DIR__ . "/logs/cookie.txt")) {
     unlink(__DIR__ . "/logs/cookie.txt");
+}
 
 $lockFile = __DIR__ . "/run.lock";
 
@@ -25,5 +27,7 @@ if (file_exists(__DIR__ . "/logs/sync.log")) {
 
 $apiHelper = new ApiHelper($сonfig);
 
-if ($apiHelper->processXMLOrders())
+if ($apiHelper->processXMLOrders()) {
     unlink($lockFile);
+    file_put_contents(__DIR__ . "/logs/sync.log", date('Y-m-d H:i:s'));
+}

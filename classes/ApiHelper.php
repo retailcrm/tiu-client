@@ -48,67 +48,89 @@ class ApiHelper {
 
         $orders = $this->filterOrders($orders);
 
-        if ($this->uploadOrders($orders)) {
-            $a = sizeof($orders);
-            echo "uploaded $a orders" . PHP_EOL;
-            return true;
-        } else {
-            echo "upload failed" . PHP_EOL;
-            return false;
-        }
+        $this->uploadOrders($orders);
     }
 
     protected function uploadOrders($orders) {
-        if ($orders === false)
-            return false;
         if (sizeof($orders)) {
             $orders = array_chunk($orders, $this->config['retailcrm_order_chunk_size']);
             foreach ($orders as $chunk) {
                 try {
                     $result = $this->crmClient->ordersUpload($chunk);
+                    if (!$result->isSuccessful()) {
+                        $this->writeLog('ordersUpload: ' . $result['errorMsg'] . (isset($result['errors']) ? ': ' . json_encode($result['errors']) : ''));
+                    }
+                    time_nanosleep(0, 200000000);
                 } catch (\RetailCrm\Exception\CurlException $e) {
-                    $this->writeLog(
-                        '\Retailcrm\ApiClient::ordersUpload: ' . $e,
-                        'error'
-                    );
-                    return false;
+                    $this->writeLog('ordersUpload: ' . $e, 'error');
                 }
-                if (! $result->isSuccessful()) {
-                    $this->writeLog(
-                        '\Retailcrm\ApiClient::ordersUpload: ' . $result['errorMsg'] . (isset($result['errors']) ? ': ' . json_encode($result['errors']) : '')
-                    );
-                }
-                time_nanosleep(0, 200000000);
             }
+
+            return true;
+        } else {
+            return false;
         }
-        return true;
     }
 
     protected function checkCustomers($order) {
         $customerId = false;
-        if ($order['email'] != '') $filter['email']= $order['email'];
-        if ($order['phone'] != '') $filter['name'] = $order['phone'];
+        $filter = array();
 
-        if (isset($filter)) {
+        if (!empty($order['email'])) $filter['email']= $order['email'];
+        if (!empty($order['phone'])) $filter['name'] = $order['phone'];
+
+        if (!empty($filter)) {
             try {
                 $customers = $this->crmClient->customersList($filter);
             } catch (\RetailCrm\Exception\CurlException $e) {
-                $this->writeLog(
-                    '\Retailcrm\ApiClient::customersList: ' . $e,
-                    'error'
-                );
-                return false;
+                $this->writeLog('customersList: ' . $e, 'error');
             }
 
             if (!empty($customers['customers'])) {
-                foreach ($customers as $_customer) {
+                foreach ($customers['customers'] as $_customer) {
                     if (!empty($_customer['externalId'])) {
                         $customerId = $_customer['externalId'];
                         break;
                     }
                 }
-            }
 
+                if ($customerId === false) {
+                    try {
+                        $request = $this->crmClient->customersFixExternalId(
+                            array(
+                                'id' => $customers['customers'][0]['id'],
+                                'externalId' => $order['externalId']
+                            )
+                        );
+
+                        if ($request->isSuccessful()) {
+                            $customerId = $order['externalId'];
+                        }
+                    } catch (\RetailCrm\Exception\CurlException $e) {
+                        $this->writeLog('customersFixExternalIds: ' . $e, 'error');
+                    }
+                }
+            } else {
+                try {
+                    $request = $this->crmClient->customersCreate(
+                        array(
+                            'externalId' => $order['externalId'],
+                            'firstName' => $order['firstName'],
+                            'lastName' => !empty($order['lastName']) ? $order['lastName'] : '',
+                            'email' => !empty($order['email']) ? $order['email'] : '',
+                            'phones' => !empty($order['phone'])
+                                ? array(array('number' => $order['phone']))
+                                : array()
+                        )
+                    );
+
+                    if ($request->isSuccessful()) {
+                        $customerId = $order['externalId'];
+                    }
+                } catch (\RetailCrm\Exception\CurlException $e) {
+                    $this->writeLog('customersCreate: ' . $e, 'error');
+                }
+            }
         }
 
         return $customerId;
@@ -129,6 +151,7 @@ class ApiHelper {
 
     protected function filterOrders($toUpload) {
         $numbers = array_keys($toUpload);
+
         if (date_create_from_format('Y-m-d H:i:s', $this->config['date_from'])) {
             foreach ($toUpload as $i => $order) {
                 if ($order['createdAt'] < $this->config['date_from']) {
