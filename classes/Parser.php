@@ -64,9 +64,8 @@ class Parser {
         }
 
         $items = array();
-        $xmlItems = $xml->items;
+        $xmlItems = $xml->items->item;
         foreach($xmlItems as $xmlItem) {
-            $xmlItem = $xmlItem->item;
             $items[] = array(
                 'productId' => (string)$xmlItem['id'],
                 'productName' => (string)$xmlItem->name,
