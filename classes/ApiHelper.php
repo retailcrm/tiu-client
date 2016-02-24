@@ -96,7 +96,7 @@ class ApiHelper {
 
                 if ($customerId === false) {
                     try {
-                        $request = $this->crmClient->customersFixExternalId(
+                        $request = $this->crmClient->customersFixExternalIds(
                             array(
                                 'id' => $customers['customers'][0]['id'],
                                 'externalId' => $order['externalId']
