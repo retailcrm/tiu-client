@@ -21,7 +21,7 @@ php composer.phar require retailcrm/api-client-php ~3.0.0
 Добавьте в крон задание
 
 ```sh
-*.10 * * * * /usr/bin/php /path/to/tiu-client/run.php
+*/10 * * * * /usr/bin/php /path/to/tiu-client/run.php
 ```
 
 ##Структура данных
