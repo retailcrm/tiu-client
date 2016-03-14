@@ -1,6 +1,6 @@
 # tiu-client
 
-Application for export orders from [tiu.ru](http://tiu.ru) to [retailCRM](http://retailcrm.ru)
+Application for export orders from [tiu.ru](http://tiu.ru) to [retailCRM](http://retailcrm.pro)
 
 Can be used with [prom.ua](http://prom.ua), [deal.by](http://deal.by), [satu.kz](http://satu.kz)
 
@@ -40,13 +40,13 @@ This link [can be taken from backoffice](https://my.tiu.ru/cabinet/order/export_
 ```xml
 <orders date="2015-08-31 17:32">
     <order id="2803303" state="new">
-        <name>Иван Петров</name>
+        <name>John Doe</name>
         <phone>+79111111111</phone>
         <email>test@example.org</email>
         <date>22.07.15 19:24</date>
-        <address>Новокузнецк, ул. Тестовая 71</address>
-        <paymentType>Наличными</paymentType>
-        <deliveryType>Доставка курьером</deliveryType>
+        <address>Moscow, Sample st., 15</address>
+        <paymentType>Cash</paymentType>
+        <deliveryType>Courier</deliveryType>
         <priceRUB>691.00</priceRUB>
         <items>
             <item id="68534240">
