@@ -1,4 +1,6 @@
 <?php
+$startTime = date('Y-m-d H:i:s');
+
 require(__DIR__ . "/classes/ApiHelper.php");
 require(__DIR__ . "/config/config.php");
 
@@ -19,7 +21,7 @@ if (file_exists($lockFile)) {
     }
 }
 
-file_put_contents("run.lock", strtotime('+5 minutes'));
+file_put_contents($lockFile, strtotime('+5 minutes'));
 
 if (file_exists(__DIR__ . "/logs/sync.log")) {
     $config['date_from'] = file_get_contents(__DIR__ . "/logs/sync.log");
@@ -29,5 +31,5 @@ $apiHelper = new ApiHelper($сonfig);
 
 if ($apiHelper->processXMLOrders()) {
     unlink($lockFile);
-    file_put_contents(__DIR__ . "/logs/sync.log", date('Y-m-d H:i:s'));
+    file_put_contents(__DIR__ . "/logs/sync.log", $startTime);
 }
