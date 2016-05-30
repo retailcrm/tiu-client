@@ -24,10 +24,13 @@ if (file_exists($lockFile)) {
 file_put_contents($lockFile, strtotime('+5 minutes'));
 
 if (file_exists(__DIR__ . "/logs/sync.log")) {
-    $config['date_from'] = file_get_contents(__DIR__ . "/logs/sync.log");
+    $lastSyncTime = file_get_contents(__DIR__ . "/logs/sync.log");
+    $lastSyncTime = new DateTime($lastSyncTime);
+    $lastSyncTime->sub(new DateInterval('PT1M'));
+    $config['date_from'] = $lastSyncTime->format('Y-m-d H:i:s');
 }
 
-$apiHelper = new ApiHelper($сonfig);
+$apiHelper = new ApiHelper($config);
 
 if ($apiHelper->processXMLOrders()) {
     unlink($lockFile);
