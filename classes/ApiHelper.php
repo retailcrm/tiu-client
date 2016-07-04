@@ -49,6 +49,8 @@ class ApiHelper {
         $orders = $this->filterOrders($orders);
 
         $this->uploadOrders($orders);
+
+        return true;
     }
 
     protected function uploadOrders($orders) {
