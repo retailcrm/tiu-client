@@ -25,7 +25,7 @@ if (file_exists(__DIR__ . "/logs/sync.log")) {
     $config['date_from'] = file_get_contents(__DIR__ . "/logs/sync.log");
 }
 
-$apiHelper = new ApiHelper($сonfig);
+$apiHelper = new ApiHelper($config);
 
 if ($apiHelper->processXMLOrders()) {
     unlink($lockFile);
