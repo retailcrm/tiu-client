@@ -98,8 +98,10 @@ class ApiHelper {
                     try {
                         $request = $this->crmClient->customersFixExternalIds(
                             array(
-                                'id' => $customers['customers'][0]['id'],
-                                'externalId' => $order['externalId']
+                                array(
+                                    'id' => $customers['customers'][0]['id'],
+                                    'externalId' => $order['externalId']
+                                )
                             )
                         );
 
