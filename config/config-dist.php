@@ -1,5 +1,5 @@
 <?php
-$сonfig = array(
+$config = array(
     /**
      * xml link (like https://my.tiu.ru/cabinet/export_orders/xml/1234567?hash_tag=472g8fzb1af38d35f2c521dc8a1e1208)
      * can be taken here: https://my.tiu.ru/cabinet/order/export_orders
