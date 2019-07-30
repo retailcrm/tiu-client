@@ -77,7 +77,7 @@ class ApiHelper {
         $filter = array();
 
         if (!empty($order['email'])) $filter['email']= $order['email'];
-        if (!empty($order['phone'])) $filter['name'] = $order['phone'];
+        if (!empty($order['phone'])) $filter['phone'] = $order['phone'];
 
         if (!empty($filter)) {
             try {
