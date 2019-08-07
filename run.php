@@ -19,7 +19,7 @@ if (file_exists($lockFile)) {
     }
 }
 
-file_put_contents("run.lock", strtotime('+5 minutes'));
+file_put_contents($lockFile, strtotime('+5 minutes'));
 
 if (file_exists(__DIR__ . "/logs/sync.log")) {
     $config['date_from'] = file_get_contents(__DIR__ . "/logs/sync.log");
