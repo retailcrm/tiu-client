@@ -4,7 +4,7 @@ Application for export orders from [tiu.ru](http://tiu.ru) to [retailCRM](http:/
 
 Can be used with [prom.ua](http://prom.ua), [deal.by](http://deal.by), [satu.kz](http://satu.kz)
 
-##Setup
+## Setup
 
 Execute in your shell
 
@@ -17,7 +17,7 @@ php composer.phar require retailcrm/api-client-php ~3.0.0
 
 Create & fill configuration file at config/config.php (see /config/config-dist.php)
 
-##Usage
+## Usage
 
 Create a Cron job
 
@@ -25,7 +25,7 @@ Create a Cron job
 */10 * * * * /usr/bin/php /path/to/tiu-client/run.php
 ```
 
-##Data structure
+## Data structure
 
 tiu.ru exports orders data as xml file available via special link like this
 
@@ -35,7 +35,7 @@ tiu.ru exports orders data as xml file available via special link like this
 
 This link [can be taken from backoffice](https://my.tiu.ru/cabinet/order/export_orders)
 
-####XML example
+#### XML example
 
 ```xml
 <orders date="2015-08-31 17:32">
