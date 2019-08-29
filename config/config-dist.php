@@ -18,6 +18,7 @@ $config = array(
     'order_prefix' => '', // optional
     'set_external_ids' => false, // set externalId field
     'order_method'  => 'shopping-cart',
+    'order_method_callback' => 'callback', // set your order type
 
     /**
      * delivery mapping (tiu => CRM)

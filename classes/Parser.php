@@ -42,7 +42,7 @@ class Parser {
         ));
 
         if (empty($xml->name) && empty((string) $xml->email)) {
-            $order['orderMethod'] = 'callback';
+            $order['orderMethod'] = $this->config['order_method_callback'];
         } else {
             $order['orderMethod'] = $this->config['order_method'];
         }
