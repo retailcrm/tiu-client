@@ -4,7 +4,7 @@
 
 Данный клиент также подойдет для работы с площадками [prom.ua](http://prom.ua), [deal.by](http://deal.by), [satu.kz](http://satu.kz)
 
-##Установка
+## Установка
 
 Выполните следующие команды в терминале
 ```sh
@@ -16,7 +16,7 @@ php composer.phar require retailcrm/api-client-php ~3.0.0
 
 Создайте и отредактируйте конфигурационный файл config/config.php аналогично примеру /config/config-dist.php
 
-##Использование
+## Использование
 
 Добавьте в крон задание
 
@@ -24,7 +24,7 @@ php composer.phar require retailcrm/api-client-php ~3.0.0
 */10 * * * * /usr/bin/php /path/to/tiu-client/run.php
 ```
 
-##Структура данных
+## Структура данных
 
 tiu.ru выгружает заказы в XML-файл доступный по ссылке вида
 
